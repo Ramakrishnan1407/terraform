@@ -36,7 +36,7 @@ provider "azuread" {
 
 
 data "azurerm_resource_group" "rg" {
-  name = "TestGroup"
+  name = "TestGroup-rg"
 }
 
 resource "azurerm_virtual_network" "vnet" {
