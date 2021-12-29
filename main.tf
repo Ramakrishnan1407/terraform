@@ -51,7 +51,7 @@ resource "azurerm_subnet" "sn" {
     for_each              =   var.subnets
     name                  =   each.key
     resource_group_name   =   data.azurerm_resource_group.rg.name
-    virtual_network_name  =   data.azurerm_virtual_network.vnet.name
+    virtual_network_name  =   azurerm_virtual_network.vnet.name
     address_prefixes      =   [each.value]
 }
 
