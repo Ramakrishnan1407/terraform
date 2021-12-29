@@ -41,8 +41,8 @@ data "azurerm_resource_group" "rg" {
 
 resource "azurerm_virtual_network" "vnet" {
     name                  =   "${var.prefix}-vnet"
-    resource_group_name   =   azurerm_resource_group.rg.name
-    location              =   azurerm_resource_group.rg.location
+    resource_group_name   =   data.azurerm_resource_group.rg.name
+    location              =   data.azurerm_resource_group.rg.location
     address_space         =   [var.vnet_address_range]
     tags                  =   var.tags
 }
@@ -50,15 +50,15 @@ resource "azurerm_virtual_network" "vnet" {
 resource "azurerm_subnet" "sn" {
     for_each              =   var.subnets
     name                  =   each.key
-    resource_group_name   =   azurerm_resource_group.rg.name
-    virtual_network_name  =   azurerm_virtual_network.vnet.name
+    resource_group_name   =   data.azurerm_resource_group.rg.name
+    virtual_network_name  =   data.azurerm_virtual_network.vnet.name
     address_prefixes      =   [each.value]
 }
 
 resource "azurerm_network_security_group" "nsg" {
     name                        =       "${var.prefix}-web-nsg"
-    resource_group_name         =       azurerm_resource_group.rg.name
-    location                    =       azurerm_resource_group.rg.location
+    resource_group_name         =       data.azurerm_resource_group.rg.name
+    location                    =       data.azurerm_resource_group.rg.location
     tags                        =       var.tags
 
     security_rule {
@@ -87,16 +87,16 @@ resource "azurerm_subnet_network_security_group_association" "member-subnet-nsg"
 
 resource "azurerm_public_ip" "pip" {
     name                            =     "${var.prefix}-public-ip"
-    resource_group_name             =     azurerm_resource_group.rg.name
-    location                        =     azurerm_resource_group.rg.location
+    resource_group_name             =     data.azurerm_resource_group.rg.name
+    location                        =     data.azurerm_resource_group.rg.location
     allocation_method               =     var.allocation_method[0]
     tags                            =     var.tags
 }
 
 resource "azurerm_network_interface" "nic" {
     name                              =   "${var.prefix}-nic"
-    resource_group_name               =   azurerm_resource_group.rg.name
-    location                          =   azurerm_resource_group.rg.location
+    resource_group_name               =   data.azurerm_resource_group.rg.name
+    location                          =   data.azurerm_resource_group.rg.location
     tags                              =   var.tags
     ip_configuration                  {
         name                          =  "${var.prefix}-nic-ipconfig"
@@ -108,8 +108,8 @@ resource "azurerm_network_interface" "nic" {
 
 resource "azurerm_windows_virtual_machine" "vm" {
     name                              =   "${var.prefix}-vm"
-    resource_group_name               =   azurerm_resource_group.rg.name
-    location                          =   azurerm_resource_group.rg.location
+    resource_group_name               =   data.azurerm_resource_group.rg.name
+    location                          =   data.azurerm_resource_group.rg.location
     network_interface_ids             =   [azurerm_network_interface.nic.id]
     size                              =   var.virtual_machine_size
     computer_name                     =   var.computer_name
