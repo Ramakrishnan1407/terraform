@@ -35,8 +35,10 @@ provider "azuread" {
 }
 
 
-data "azurerm_resource_group" "rg" {
-  name = "TestGroup-rg"
+resource "azurerm_resource_group" "rg" {
+    name                  =   "${var.prefix}-rg"
+    location              =   var.location
+    tags                  =   var.tags
 }
 
 resource "azurerm_virtual_network" "vnet" {
