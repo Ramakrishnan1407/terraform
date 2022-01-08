@@ -40,7 +40,8 @@ data "azurerm_image" "packer-image" {
 }
 
 data "azurerm_resource_group" "rg" {
-    name                  =   packer
+    name                  =   "packer"
+    location              =   "eastus"
     
 }
 
