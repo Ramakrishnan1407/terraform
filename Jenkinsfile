@@ -75,16 +75,6 @@ pipeline{
             }
         }
 
-        stage('Waiting for Approval'){
-            steps {
-                timeout(time: 10, unit: 'MINUTES') {
-                    input (message: "Deploy the infrastructure?")
-                }
-            }
-        
-        }
-    
-
         stage('Terraform Apply'){
             steps {
                     ansiColor('xterm') {

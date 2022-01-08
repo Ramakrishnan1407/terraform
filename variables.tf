@@ -25,7 +25,7 @@ variable "tenant_id" {
 variable "prefix" {
     description =   "Prefix to append to all resource names"
     type        =   string
-    default     =   "TestGroup"
+    default     =   "packer"
 }
 
 variable "tags" {
@@ -73,7 +73,7 @@ variable "virtual_machine_size" {
 variable "computer_name" {
     description =   "Computer name"
     type        =   string
-    default     =   "Win10vm"
+    default     =   "IISVM2019"
 }
 
 variable "admin_username" {

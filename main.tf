@@ -34,11 +34,14 @@ provider "azuread" {
     alias           =   "ad"
 }
 
+data "azurerm_image" "packer-image" {
+  name                = "myPackerImage"
+  resource_group_name = "packer"
+}
 
-resource "azurerm_resource_group" "rg" {
-    name                  =   "${var.prefix}-rg"
+data "azurerm_resource_group" "rg" {
+    name                  =   var.prefix
     location              =   var.location
-    tags                  =   var.tags
 }
 
 resource "azurerm_virtual_network" "vnet" {
@@ -71,7 +74,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                    =       "Tcp"
     source_port_range           =       "*"
     destination_port_range      =       3389
-    source_address_prefix       =       "192.168.1.36" 
+    source_address_prefix       =       "122.172.42.146" 
     destination_address_prefix  =       "*"
     
     }
@@ -125,13 +128,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
         disk_size_gb                  =   var.os_disk_size_gb
     }
 
-    source_image_reference {
-        publisher                     =   var.publisher
-        offer                         =   var.offer
-        sku                           =   var.sku
-        version                       =   var.vm_image_version
-    }
-
+    source_image_id = data.azurerm_image.packer-image.id
     tags                              =   var.tags
 
 }
